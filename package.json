@@ -4,6 +4,6 @@
   "description": "testing.",
   "version": "0.1.0",
   "engines": {
-    "brackets": ">=0.24.0"
+    "brackets": ">=0.40.0"
   }
 }

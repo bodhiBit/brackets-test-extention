@@ -20,26 +20,15 @@ define(function (require, exports, module) {
   }
   
   function doCreate() {
-    var dest;
-    
-    // find and set destination folder
-    if (ProjectManager.getSelectedItem()) {
-      if (ProjectManager.getSelectedItem().isDirectory) {
-        dest = ProjectManager.getSelectedItem().fullPath;
-      } else {
-        dest = ProjectManager.getSelectedItem().parentPath;
-      }
-    } else {
-      dest = ProjectManager.getProjectRoot().fullPath;
-    }
-    
     // Now create something..!
+    // Linux skips the renaming, despite that skipRename == false..
     ProjectManager.createNewItem(
-      FileSystem.getDirectoryForPath(dest),
-      "Something new.txt",
+      ProjectManager.getProjectRoot(),
+      "Something_new.txt",
       false,
       false
     ).done(function(entry){
+      // This DOES seem to work in Linux.. strangely enough..
       ProjectManager.renameItemInline(entry);
       console.log("Congratulations! You just created something! ^_^");
     });
@@ -48,7 +37,7 @@ define(function (require, exports, module) {
   function doRename() {
     var item;
     
-    // find and set destination folder
+    // find and set item to rename
     if (ProjectManager.getSelectedItem()) {
       item = ProjectManager.getSelectedItem();
     } else {
@@ -58,8 +47,10 @@ define(function (require, exports, module) {
     
     // Now rename something..!
     console.log("Trying to rename something...");
+    // This does NOT seem to work in Linux..
     ProjectManager.renameItemInline(item).done(function(){
-      console.log("Congratulations! You just renamed something! ^_^");
+      // renameItemInline should return a promise..
+      window.alert("This alert will never get shown... :(");
     });
   }
 
