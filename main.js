@@ -12,11 +12,24 @@ define(function (require, exports, module) {
       FileSystem          = brackets.getModule("filesystem/FileSystem");
 
   function init() {
-    var menu = Menus.addMenu("Test", "test-menu", Menus.AFTER, Menus.AppMenuBar.FILE_MENU);
-    CommandManager.register("Create new something...", "test-create", doCreate);
-    menu.addMenuItem("test-create");
-    CommandManager.register("Rename something...", "test-rename", doRename);
-    menu.addMenuItem("test-rename");
+    var menu = Menus.addMenu("Test", "test-menu");
+    
+    // These don't seem to work proberly in Linux
+    CommandManager.register("Create something now...", "test-create-now", doCreate);
+    menu.addMenuItem("test-create-now");
+    CommandManager.register("Rename something now...", "test-rename-now", doRename);
+    menu.addMenuItem("test-rename-now");
+    
+    // Wrapping functions in `setTimeout` seems to solve the problem
+    // Works both in Windows and Linux
+    CommandManager.register("Create something in a sec...", "test-create-sec", function(){
+      setTimeout(doCreate, 1000);
+    });
+    menu.addMenuItem("test-create-sec");
+    CommandManager.register("Rename something in a sec...", "test-rename-sec", function(){
+      setTimeout(doRename, 1000);
+    });
+    menu.addMenuItem("test-rename-sec");
   }
   
   function doCreate() {
